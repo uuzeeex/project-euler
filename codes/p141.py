@@ -22,5 +22,8 @@ while f(1, x, 1) < SUP:
             ns = f(a, x, y)
             if utils.is_square(ns):
                 ans_set.add(ns)
+            a += 1
+        y += 1
+    x += 1
 ans = sum(ans_set)
 print(ans)
