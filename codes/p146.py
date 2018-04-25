@@ -12,7 +12,7 @@ rems = [1, 3, 7, 9, 13, 27]
 
 ans = 0
 for n in range(10, SUP, 10):
-    if n % 10000 == 0:
+    if n % 1000000 == 0:
         print(n)
     s = n * n
     if all(utils.miller_rabin(s + rem) for rem in rems):
