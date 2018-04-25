@@ -13,8 +13,6 @@ N = 120000
 mapping = [set() for _ in range(N)]
 
 for p in range(1, N):
-    if p % 1000 == 0:
-        print(p)
     for q in range(1, min(p, N - p) + 1):
         b = p * p + q * q + p * q
         if utils.is_square(b):
