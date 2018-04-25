@@ -87,14 +87,10 @@ def hepta(n):
 def octa(n):
     return n * (3 * n - 2)
 
-def is_square(apositiveint):
-    x = apositiveint // 2
-    seen = set([x])
-    while x * x != apositiveint:
-        x = (x + (apositiveint // x)) // 2
-        if x in seen: return False
-        seen.add(x)
-    return True
+def is_square(n):
+    if n < 0: return False
+    s = round(math.sqrt(n))
+    return s * s == n
 
 def is_triangle(t):
     if is_square(1 + 8 * t):
