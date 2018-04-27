@@ -179,6 +179,13 @@ def lfg(n):
             s.append((s[-24] + s[-55] + 10 ** 6) % (10 ** 6) - 5 * (10 ** 5))
     return s
 
+def lgg(n):
+    t, s = 0, []
+    for k in range(1, n + 1):
+        t = (615949 * t + 797807) % (1 << 20)
+        s.append(t - (1 << 19))
+    return s
+
 def max_sub(a):
     f = [a[0]]
     for e in a[1 :]:
