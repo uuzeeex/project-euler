@@ -169,3 +169,18 @@ def phi(n, p_list):
         if d == 1:
             break
     return phi
+
+def lfg(n):
+    s = []
+    for k in range(1, n + 1):
+        if k <= 55:
+            s.append((100003 - 200003 * k + 300007 * (k ** 3)) % (10 ** 6) - 5 * (10 ** 5))
+        else:
+            s.append((s[-24] + s[-55] + 10 ** 6) % (10 ** 6) - 5 * (10 ** 5))
+    return s
+
+def max_sub(a):
+    f = [a[0]]
+    for e in a[1 :]:
+        f.append(max(f[-1] + e, e))
+    return max(f)
