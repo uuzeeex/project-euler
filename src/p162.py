@@ -16,7 +16,6 @@ class P162Solver:
                     f[i & 1][j] += f[(i - 1) & 1][j] + f[(i - 1) & 1][j - 2]
                 if j & 4 != 0:
                     f[i & 1][j] += f[(i - 1) & 1][j] + f[(i - 1) & 1][j - 4]
-        print(f[(n_digits - 1) & 1][7], deduct)
         return '%X' % (f[(n_digits - 1) & 1][7] - deduct)
 
 
