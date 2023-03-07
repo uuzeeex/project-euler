@@ -6,11 +6,23 @@ Created on Wed Mar 21 10:31:11 2018
 """
 
 import math
+from collections import namedtuple
+from fractions import Fraction
 from typing import Iterator
 
 import numpy as np
 import random
 import copy
+
+Point = namedtuple('Point', 'x y')
+Segment = namedtuple('Segment', 'p1 p2')
+Vector = namedtuple('Vector', 'x y')
+
+PointGridType = Point[int, int]
+PointRationalType = Point[Fraction, Fraction]
+
+SegmentGridType = Segment[Point[int, int], Point[int, int]]
+VectorGridType = Vector[int, int]
 
 
 def sieve(r):
@@ -236,3 +248,45 @@ def fibonacci_by_upper_bound(u: int) -> Iterator[int]:
         yield f[0]
         f[1] += f[0]
         f[0] = f[1] - f[0]
+
+
+def blum_blum_shub(n: int) -> Iterator[int]:
+    s = 290797
+    for i in range(n):
+        s = s * s % 50515093
+        yield s % 500
+
+
+def vector(p1: PointGridType, p2: PointGridType) -> VectorGridType:
+    return Vector(p2.x - p1.x, p2.y - p1.y)
+
+
+def cross_prod(v1: VectorGridType, v2: VectorGridType) -> int:
+    return v1.x * v2.y - v2.x * v1.y
+
+
+def true_intersection(s1: SegmentGridType, s2: SegmentGridType) -> bool:
+    v1, v2 = vector(s1.p1, s1.p2), vector(s2.p1, s2.p2)
+    v11, v12 = vector(s1.p2, s2.p1), vector(s1.p2, s2.p2)
+    v21, v22 = vector(s2.p2, s1.p1), vector(s2.p2, s1.p2)
+    both_sides_1 = cross_prod(v1, v11) * cross_prod(v1, v12) < 0
+    both_sides_2 = cross_prod(v2, v21) * cross_prod(v2, v22) < 0
+    if both_sides_1 and both_sides_2:
+        return True
+    return False
+
+
+def intersection(s1: SegmentGridType, s2: SegmentGridType) -> PointRationalType | None:
+    dx1, dy1 = s1.p2.x - s1.p1.x, s1.p2.y - s1.p1.y
+    dx2, dy2 = s2.p2.x - s2.p1.x, s2.p2.y - s2.p1.y
+    if dx1 * dy2 == dx2 * dy1:
+        return None
+    x = Fraction(
+        dx2 * (s1.p1.y * dx1 - s1.p1.x * dy1) - dx1 * (s2.p1.y * dx2 - s2.p1.x * dy2),
+        dx1 * dy2 - dx2 * dy1
+    )
+    if dx1 != 0:
+        y = (x - s1.p1.x) * dy1 / dx1 + s1.p1.y
+    else:
+        y = (x - s2.p1.x) * dy2 / dx2 + s2.p1.y
+    return PointRationalType(x, y)
