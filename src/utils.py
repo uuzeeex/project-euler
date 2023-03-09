@@ -265,7 +265,7 @@ def cross_prod(v1: VectorGridType, v2: VectorGridType) -> int:
     return v1.x * v2.y - v2.x * v1.y
 
 
-def true_intersection(s1: SegmentGridType, s2: SegmentGridType) -> bool:
+def truly_intersected(s1: SegmentGridType, s2: SegmentGridType) -> bool:
     v1, v2 = vector(s1.p1, s1.p2), vector(s2.p1, s2.p2)
     v11, v12 = vector(s1.p2, s2.p1), vector(s1.p2, s2.p2)
     v21, v22 = vector(s2.p2, s1.p1), vector(s2.p2, s1.p2)
@@ -290,3 +290,11 @@ def intersection(s1: SegmentGridType, s2: SegmentGridType) -> PointRationalType 
     else:
         y = (x - s2.p1.x) * dy2 / dx2 + s2.p1.y
     return PointRationalType(x, y)
+
+
+def sum_digits(n: int) -> int:
+    s = 0
+    while n > 0:
+        s += n % 10
+        n //= 10
+    return s
