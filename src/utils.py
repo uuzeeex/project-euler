@@ -9,6 +9,9 @@ import math
 from collections import namedtuple
 from fractions import Fraction
 from typing import Iterator
+from typing import List
+from typing import NamedTuple
+from typing import Optional
 
 import numpy as np
 import random
@@ -298,3 +301,31 @@ def sum_digits(n: int) -> int:
         s += n % 10
         n //= 10
     return s
+
+
+class InfDecimal(NamedTuple):
+    int_part: int
+    digits: List[int]
+    loop_start: Optional[int]
+
+
+def div_to_inf_decimal(a: int, b: int) -> InfDecimal:
+    i = a // b
+    a %= b
+    rems = {}
+    pos = -1
+    digits = []
+    while a > 0:
+        while a < b:
+            a *= 10
+            digits.append(0)
+            pos += 1
+        digits[-1] = a // b
+        a %= b
+        if a in rems:
+            break
+        rems[a] = pos
+    if a == 0:
+        return InfDecimal(i, digits, None)
+    digits.pop()
+    return InfDecimal(i, digits, rems[a])
